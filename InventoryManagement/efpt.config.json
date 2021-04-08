@@ -1,0 +1,41 @@
+﻿{
+  "CodeGenerationMode": 0,
+  "ContextClassName": "InventorymanagementdbContext",
+  "ContextNamespace": null,
+  "DefaultDacpacSchema": null,
+  "FilterSchemas": false,
+  "IncludeConnectionString": false,
+  "ModelNamespace": null,
+  "OutputContextPath": null,
+  "OutputPath": "Data\\InventoryManagement",
+  "ProjectRootNamespace": "InventoryManagementDB",
+  "Schemas": null,
+  "SelectedHandlebarsLanguage": 0,
+  "SelectedToBeGenerated": 0,
+  "Tables": [
+    {
+      "Name": "[dbo].[WeatherForecast]",
+      "ObjectType": 0
+    }
+  ],
+  "InventoryTables": [
+    {
+      "Name": "[dbo].[Inventory]",
+      "ObjectType": 0
+    }
+  ],
+  "UiHint": "ZBC-AA-JOAC3146.InventoryManagementDB",
+  "UseBoolPropertiesWithoutDefaultSql": false,
+  "UseDatabaseNames": false,
+  "UseDbContextSplitting": false,
+  "UseFluentApiOnly": true,
+  "UseHandleBars": false,
+  "UseInflector": false,
+  "UseLegacyPluralizer": false,
+  "UseNoConstructor": false,
+  "UseNoNavigations": false,
+  "UseNoObjectFilter": false,
+  "UseNodaTime": false,
+  "UseNullableReferences": false,
+  "UseSpatial": false
+}

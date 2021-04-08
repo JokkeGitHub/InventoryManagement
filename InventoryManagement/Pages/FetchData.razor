@@ -1,0 +1,118 @@
+﻿@page "/fetchdata"
+@using InventoryManagement.Data
+@using InventoryManagementDB.Data.InventoryManagement
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@*
+    Using OwningComponentBase ensures that the service and related services
+    that share its scope are disposed with the component.
+    Otherwise DbContext in ForecastService will live for the life of the
+    connection, which may be problematic if clients stay
+    connected for a long time.
+    We access WeatherForecastService using @Service
+*@
+@inherits OwningComponentBase<WeatherForecastService>
+<h1>Weather forecast</h1>
+<!-- AuthorizeView allows us to only show sections of the page -->
+<!-- based on the security on the current user -->
+<AuthorizeView>
+    <!-- Show this section if the user is logged in -->
+    <Authorized>
+        <h4>Hello, @context.User.Identity.Name!</h4>
+        @if (forecasts == null)
+        {
+            <!-- Show this if the current user has no data... yet... -->
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <!-- Show the forecasts for the current user -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Temp. (C)</th>
+                        <th>Temp. (F)</th>
+                        <th>Summary</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forecast in forecasts)
+                    {
+                        <tr>
+                            <td>@forecast.Date.Value.ToShortDateString()</td>
+                            <td>@forecast.TemperatureC</td>
+                            <td>@forecast.TemperatureF</td>
+                            <td>@forecast.Summary</td>
+                            <td>
+                                <!-- Edit the current forecast -->
+                                <button class="btn btn-primary"
+                                        @onclick="(() => EditForecast(forecast))">
+                                    Edit
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <p>
+                <!-- Add a new forecast -->
+                <button class="btn btn-primary"
+                        @onclick="AddNewForecast">
+                    Add New Forecast
+                </button>
+            </p>
+        }
+        @if (ShowPopup)
+        {
+            <!-- This is the popup to create or edit a forecast -->
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Edit Forecast</h3>
+                            <!-- Button to close the popup -->
+                            <button type="button" class="close"
+                                    @onclick="ClosePopup">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                        </div>
+                        <!-- Edit form for the current forecast -->
+                        <div class="modal-body">
+                            <input class="form-control" type="text"
+                                   placeholder="Celsius forecast"
+                                   @bind="objWeatherForecast.TemperatureC" />
+                            <input class="form-control" type="text"
+                                   placeholder="Fahrenheit forecast"
+                                   @bind="objWeatherForecast.TemperatureF" />
+                            <input class="form-control" type="text"
+                                   placeholder="Summary"
+                                   @bind="objWeatherForecast.Summary" />
+                            <br />
+                            <!-- Button to save the forecast -->
+                            <button class="btn btn-primary"
+                                    @onclick="SaveForecast">
+                                Save
+                            </button>
+
+                            <!-- Only show delete button if not a new record -->
+                            @if (objWeatherForecast.Id > 0)
+                            {
+                                <!-- Button to delete the forecast -->
+                                <button class="btn btn-primary"
+                                        @onclick="DeleteForecast">
+                                    Delete
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </Authorized>
+    <!-- Show this section if the user is not logged in -->
+    <NotAuthorized>
+        <p>You're not signed in.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
